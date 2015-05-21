@@ -51,6 +51,7 @@ class PlaySoundViewController: UIViewController,AVAudioPlayerDelegate {
     
     @IBAction func stopPlayBack(sender: UIButton) {
         audioPlayer.stop()
+        audioEngine.stop()
         stopButton2.hidden = true
     }
     @IBAction func playSoundSlow(sender: UIButton) {
@@ -66,13 +67,13 @@ class PlaySoundViewController: UIViewController,AVAudioPlayerDelegate {
     @IBAction func playSoundChipmonk(sender: UIButton) {
         
         playAudioWithVariablePitch(1000)
-        stopButton2.hidden = true
+        //stopButton2.hidden = true
     }
     
     @IBAction func playSoundVader(sender: UIButton) {
         
          playAudioWithVariablePitch(-1000)
-        stopButton2.hidden = true
+        //stopButton2.hidden = true
     }
     
     func playAudioWithVariablePitch(pitch: Float)
@@ -92,7 +93,7 @@ class PlaySoundViewController: UIViewController,AVAudioPlayerDelegate {
         audioEngine.connect(audioPlayerNode, to: changePitchEffect, format: nil)
         audioEngine.connect(changePitchEffect, to: audioEngine.outputNode, format: nil)
         
-        audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: audioPlayerNodeFinished())
+        audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: { self.audioPlayerNodeFinished() })
         
         audioEngine.startAndReturnError(nil)
         
